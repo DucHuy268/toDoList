@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 /**
  * Hook personnalisé pour gérer une liste de tâches.
@@ -7,7 +7,15 @@ import { useState } from 'react'
  * @returns {{ todos: Array, addTodo: function, removeTodo: function, toggleTodo: function }}
  */
 export default function useTodos(initialTodos = []) {
-  const [todos, setTodos] = useState(initialTodos)
+  const [todos, setTodos] = useState(() => {
+    const saved = localStorage.getItem('todos')
+    localStorage.setItem('todos', JSON.stringify(todos))
+    return saved ? JSON.parse(saved) : initialTodos
+  })
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
 
   const addTodo = (text) => {
     const newTodo = {
