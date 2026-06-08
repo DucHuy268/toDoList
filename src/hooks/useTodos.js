@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 export default function useTodos(initialTodos = []) {
   const [todos, setTodos] = useState(() => {
     const saved = localStorage.getItem('todos')
-    localStorage.setItem('todos', JSON.stringify(todos))
     return saved ? JSON.parse(saved) : initialTodos
   })
 
